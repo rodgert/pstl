@@ -70,4 +70,4 @@ export(TARGETS ParallelSTL NAMESPACE pstl:: FILE ParallelSTLTargets.cmake)
 export(PACKAGE ParallelSTL)
 
 enable_testing()
-add_subdirectory(testsuite)
+add_subdirectory(test)
