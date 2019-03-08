@@ -14,7 +14,6 @@
 #include <type_traits>
 #include <numeric>
 
-#include "pstl_config.h"
 #include "execution_impl.h"
 #include "unseq_backend_simd.h"
 
