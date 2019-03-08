@@ -16,6 +16,7 @@
 
 #include "execution_impl.h"
 #include "unseq_backend_simd.h"
+#include "algorithm_fwd.h"
 
 #if __PSTL_USE_PAR_POLICIES
 #include "parallel_backend.h"
