@@ -55,7 +55,7 @@ transform_reduce(_ExecutionPolicy&& __exec, _ForwardIterator1 __first1, _Forward
 {
     typedef typename iterator_traits<_ForwardIterator1>::value_type _InputType;
     using namespace __pstl;
-    return internal::pattern_transform_reduce(
+    return internal::__pattern_transform_reduce(
         std::forward<_ExecutionPolicy>(__exec), __first1, __last1, __first2, __init, std::plus<_InputType>(),
         std::multiplies<_InputType>(),
         internal::is_vectorization_preferred<_ExecutionPolicy, _ForwardIterator1, _ForwardIterator2>(__exec),
@@ -69,7 +69,7 @@ transform_reduce(_ExecutionPolicy&& __exec, _ForwardIterator1 __first1, _Forward
                  _ForwardIterator2 __first2, _Tp __init, _BinaryOperation1 __binary_op1, _BinaryOperation2 __binary_op2)
 {
     using namespace __pstl;
-    return internal::pattern_transform_reduce(
+    return internal::__pattern_transform_reduce(
         std::forward<_ExecutionPolicy>(__exec), __first1, __last1, __first2, __init, __binary_op1, __binary_op2,
         internal::is_vectorization_preferred<_ExecutionPolicy, _ForwardIterator1, _ForwardIterator2>(__exec),
         internal::is_parallelization_preferred<_ExecutionPolicy, _ForwardIterator1, _ForwardIterator2>(__exec));
@@ -81,7 +81,7 @@ transform_reduce(_ExecutionPolicy&& __exec, _ForwardIterator __first, _ForwardIt
                  _BinaryOperation __binary_op, _UnaryOperation __unary_op)
 {
     using namespace __pstl;
-    return internal::pattern_transform_reduce(
+    return internal::__pattern_transform_reduce(
         std::forward<_ExecutionPolicy>(__exec), __first, __last, __init, __binary_op, __unary_op,
         internal::is_vectorization_preferred<_ExecutionPolicy, _ForwardIterator>(__exec),
         internal::is_parallelization_preferred<_ExecutionPolicy, _ForwardIterator>(__exec));
@@ -147,7 +147,7 @@ transform_exclusive_scan(_ExecutionPolicy&& __exec, _ForwardIterator1 __first, _
                          _UnaryOperation __unary_op)
 {
     using namespace __pstl;
-    return internal::pattern_transform_scan(
+    return internal::__pattern_transform_scan(
         std::forward<_ExecutionPolicy>(__exec), __first, __last, __result, __unary_op, __init, __binary_op,
         /*inclusive=*/std::false_type(),
         internal::is_vectorization_preferred<_ExecutionPolicy, _ForwardIterator1, _ForwardIterator2>(__exec),
@@ -164,7 +164,7 @@ transform_inclusive_scan(_ExecutionPolicy&& __exec, _ForwardIterator1 __first, _
                          _Tp __init)
 {
     using namespace __pstl;
-    return internal::pattern_transform_scan(
+    return internal::__pattern_transform_scan(
         std::forward<_ExecutionPolicy>(__exec), __first, __last, __result, __unary_op, __init, __binary_op,
         /*inclusive=*/std::true_type(),
         internal::is_vectorization_preferred<_ExecutionPolicy, _ForwardIterator1, _ForwardIterator2>(__exec),
@@ -202,7 +202,7 @@ adjacent_difference(_ExecutionPolicy&& __exec, _ForwardIterator1 __first, _Forwa
         return __d_first;
 
     using namespace __pstl;
-    return internal::pattern_adjacent_difference(
+    return internal::__pattern_adjacent_difference(
         std::forward<_ExecutionPolicy>(__exec), __first, __last, __d_first, __op,
         internal::is_vectorization_preferred<_ExecutionPolicy, _ForwardIterator1, _ForwardIterator2>(__exec),
         internal::is_parallelization_preferred<_ExecutionPolicy, _ForwardIterator1, _ForwardIterator2>(__exec));

@@ -36,19 +36,19 @@ uninitialized_copy(_ExecutionPolicy&& __exec, _InputIterator __first, _InputIter
     return internal::invoke_if_else(
         std::integral_constant < bool, std::is_trivial<_ValueType1>::value&& std::is_trivial<_ValueType2>::value > (),
         [&]() {
-            return internal::pattern_walk2_brick(
+            return internal::__pattern_walk2_brick(
                 std::forward<_ExecutionPolicy>(__exec), __first, __last, __result,
                 [__is_vector](_InputIterator __begin, _InputIterator __end, _ForwardIterator __res) {
-                    return internal::brick_copy(__begin, __end, __res, __is_vector);
+                    return internal::__brick_copy(__begin, __end, __res, __is_vector);
                 },
                 __is_parallel);
         },
         [&]() {
-            return internal::pattern_walk2(std::forward<_ExecutionPolicy>(__exec), __first, __last, __result,
-                                           [](_ReferenceType1 __val1, _ReferenceType2 __val2) {
-                                               ::new (std::addressof(__val2)) _ValueType2(__val1);
-                                           },
-                                           __is_vector, __is_parallel);
+            return internal::__pattern_walk2(std::forward<_ExecutionPolicy>(__exec), __first, __last, __result,
+                                             [](_ReferenceType1 __val1, _ReferenceType2 __val2) {
+                                                 ::new (std::addressof(__val2)) _ValueType2(__val1);
+                                             },
+                                             __is_vector, __is_parallel);
         });
 }
 
@@ -70,19 +70,19 @@ uninitialized_copy_n(_ExecutionPolicy&& __exec, _InputIterator __first, _Size __
     return internal::invoke_if_else(
         std::integral_constant < bool, std::is_trivial<_ValueType1>::value&& std::is_trivial<_ValueType2>::value > (),
         [&]() {
-            return internal::pattern_walk2_brick_n(
+            return internal::__pattern_walk2_brick_n(
                 std::forward<_ExecutionPolicy>(__exec), __first, __n, __result,
                 [__is_vector](_InputIterator __begin, _Size __sz, _ForwardIterator __res) {
-                    return internal::brick_copy_n(__begin, __sz, __res, __is_vector);
+                    return internal::__brick_copy_n(__begin, __sz, __res, __is_vector);
                 },
                 __is_parallel);
         },
         [&]() {
-            return internal::pattern_walk2_n(std::forward<_ExecutionPolicy>(__exec), __first, __n, __result,
-                                             [](_ReferenceType1 __val1, _ReferenceType2 __val2) {
-                                                 ::new (std::addressof(__val2)) _ValueType2(__val1);
-                                             },
-                                             __is_vector, __is_parallel);
+            return internal::__pattern_walk2_n(std::forward<_ExecutionPolicy>(__exec), __first, __n, __result,
+                                               [](_ReferenceType1 __val1, _ReferenceType2 __val2) {
+                                                   ::new (std::addressof(__val2)) _ValueType2(__val1);
+                                               },
+                                               __is_vector, __is_parallel);
         });
 }
 
@@ -106,19 +106,19 @@ uninitialized_move(_ExecutionPolicy&& __exec, _InputIterator __first, _InputIter
     return internal::invoke_if_else(
         std::integral_constant < bool, std::is_trivial<_ValueType1>::value&& std::is_trivial<_ValueType2>::value > (),
         [&]() {
-            return internal::pattern_walk2_brick(
+            return internal::__pattern_walk2_brick(
                 std::forward<_ExecutionPolicy>(__exec), __first, __last, __result,
                 [__is_vector](_InputIterator __begin, _InputIterator __end, _ForwardIterator __res) {
-                    return internal::brick_copy(__begin, __end, __res, __is_vector);
+                    return internal::__brick_copy(__begin, __end, __res, __is_vector);
                 },
                 __is_parallel);
         },
         [&]() {
-            return internal::pattern_walk2(std::forward<_ExecutionPolicy>(__exec), __first, __last, __result,
-                                           [](_ReferenceType1 __val1, _ReferenceType2 __val2) {
-                                               ::new (std::addressof(__val2)) _ValueType2(std::move(__val1));
-                                           },
-                                           __is_vector, __is_parallel);
+            return internal::__pattern_walk2(std::forward<_ExecutionPolicy>(__exec), __first, __last, __result,
+                                             [](_ReferenceType1 __val1, _ReferenceType2 __val2) {
+                                                 ::new (std::addressof(__val2)) _ValueType2(std::move(__val1));
+                                             },
+                                             __is_vector, __is_parallel);
         });
 }
 
@@ -140,19 +140,19 @@ uninitialized_move_n(_ExecutionPolicy&& __exec, _InputIterator __first, _Size __
     return internal::invoke_if_else(
         std::integral_constant < bool, std::is_trivial<_ValueType1>::value&& std::is_trivial<_ValueType2>::value > (),
         [&]() {
-            return internal::pattern_walk2_brick_n(
+            return internal::__pattern_walk2_brick_n(
                 std::forward<_ExecutionPolicy>(__exec), __first, __n, __result,
                 [__is_vector](_InputIterator __begin, _Size __sz, _ForwardIterator __res) {
-                    return internal::brick_copy_n(__begin, __sz, __res, __is_vector);
+                    return internal::__brick_copy_n(__begin, __sz, __res, __is_vector);
                 },
                 __is_parallel);
         },
         [&]() {
-            return internal::pattern_walk2_n(std::forward<_ExecutionPolicy>(__exec), __first, __n, __result,
-                                             [](_ReferenceType1 __val1, _ReferenceType2 __val2) {
-                                                 ::new (std::addressof(__val2)) _ValueType2(std::move(__val1));
-                                             },
-                                             __is_vector, __is_parallel);
+            return internal::__pattern_walk2_n(std::forward<_ExecutionPolicy>(__exec), __first, __n, __result,
+                                               [](_ReferenceType1 __val1, _ReferenceType2 __val2) {
+                                                   ::new (std::addressof(__val2)) _ValueType2(std::move(__val1));
+                                               },
+                                               __is_vector, __is_parallel);
         });
 }
 
@@ -172,14 +172,14 @@ uninitialized_fill(_ExecutionPolicy&& __exec, _ForwardIterator __first, _Forward
     internal::invoke_if_else(
         std::is_arithmetic<_ValueType>(),
         [&]() {
-            internal::pattern_walk_brick(std::forward<_ExecutionPolicy>(__exec), __first, __last,
-                                         [&__value, &__is_vector](_ForwardIterator __begin, _ForwardIterator __end) {
-                                             internal::brick_fill(__begin, __end, _ValueType(__value), __is_vector);
-                                         },
-                                         __is_parallel);
+            internal::__pattern_walk_brick(std::forward<_ExecutionPolicy>(__exec), __first, __last,
+                                           [&__value, &__is_vector](_ForwardIterator __begin, _ForwardIterator __end) {
+                                               internal::__brick_fill(__begin, __end, _ValueType(__value), __is_vector);
+                                           },
+                                           __is_parallel);
         },
         [&]() {
-            internal::pattern_walk1(
+            internal::__pattern_walk1(
                 std::forward<_ExecutionPolicy>(__exec), __first, __last,
                 [&__value](_ReferenceType __val) { ::new (std::addressof(__val)) _ValueType(__value); }, __is_vector,
                 __is_parallel);
@@ -200,15 +200,15 @@ uninitialized_fill_n(_ExecutionPolicy&& __exec, _ForwardIterator __first, _Size 
     return internal::invoke_if_else(
         std::is_arithmetic<_ValueType>(),
         [&]() {
-            return internal::pattern_walk_brick_n(std::forward<_ExecutionPolicy>(__exec), __first, __n,
-                                                  [&__value, &__is_vector](_ForwardIterator __begin, _Size __count) {
-                                                      return internal::brick_fill_n(__begin, __count,
-                                                                                    _ValueType(__value), __is_vector);
-                                                  },
-                                                  __is_parallel);
+            return internal::__pattern_walk_brick_n(std::forward<_ExecutionPolicy>(__exec), __first, __n,
+                                                    [&__value, &__is_vector](_ForwardIterator __begin, _Size __count) {
+                                                        return internal::__brick_fill_n(
+                                                            __begin, __count, _ValueType(__value), __is_vector);
+                                                    },
+                                                    __is_parallel);
         },
         [&]() {
-            return internal::pattern_walk1_n(
+            return internal::__pattern_walk1_n(
                 std::forward<_ExecutionPolicy>(__exec), __first, __n,
                 [&__value](_ReferenceType __val) { ::new (std::addressof(__val)) _ValueType(__value); }, __is_vector,
                 __is_parallel);
@@ -229,8 +229,8 @@ destroy(_ExecutionPolicy&& __exec, _ForwardIterator __first, _ForwardIterator __
     const auto __is_vector = internal::is_vectorization_preferred<_ExecutionPolicy, _ForwardIterator>(__exec);
 
     internal::invoke_if_not(std::is_trivially_destructible<_ValueType>(), [&]() {
-        internal::pattern_walk1(std::forward<_ExecutionPolicy>(__exec), __first, __last,
-                                [](_ReferenceType __val) { __val.~_ValueType(); }, __is_vector, __is_parallel);
+        internal::__pattern_walk1(std::forward<_ExecutionPolicy>(__exec), __first, __last,
+                                  [](_ReferenceType __val) { __val.~_ValueType(); }, __is_vector, __is_parallel);
     });
 }
 
@@ -248,9 +248,9 @@ destroy_n(_ExecutionPolicy&& __exec, _ForwardIterator __first, _Size __n)
     return internal::invoke_if_else(
         std::is_trivially_destructible<_ValueType>(), [&]() { return std::next(__first, __n); },
         [&]() {
-            return internal::pattern_walk1_n(std::forward<_ExecutionPolicy>(__exec), __first, __n,
-                                             [](_ReferenceType __val) { __val.~_ValueType(); }, __is_vector,
-                                             __is_parallel);
+            return internal::__pattern_walk1_n(std::forward<_ExecutionPolicy>(__exec), __first, __n,
+                                               [](_ReferenceType __val) { __val.~_ValueType(); }, __is_vector,
+                                               __is_parallel);
         });
 }
 
@@ -268,9 +268,9 @@ uninitialized_default_construct(_ExecutionPolicy&& __exec, _ForwardIterator __fi
     const auto __is_vector = internal::is_vectorization_preferred<_ExecutionPolicy, _ForwardIterator>(__exec);
 
     internal::invoke_if_not(std::is_trivial<_ValueType>(), [&]() {
-        internal::pattern_walk1(std::forward<_ExecutionPolicy>(__exec), __first, __last,
-                                [](_ReferenceType __val) { ::new (std::addressof(__val)) _ValueType; }, __is_vector,
-                                __is_parallel);
+        internal::__pattern_walk1(std::forward<_ExecutionPolicy>(__exec), __first, __last,
+                                  [](_ReferenceType __val) { ::new (std::addressof(__val)) _ValueType; }, __is_vector,
+                                  __is_parallel);
     });
 }
 
@@ -287,7 +287,7 @@ uninitialized_default_construct_n(_ExecutionPolicy&& __exec, _ForwardIterator __
 
     return internal::invoke_if_else(std::is_trivial<_ValueType>(), [&]() { return std::next(__first, __n); },
                                     [&]() {
-                                        return internal::pattern_walk1_n(
+                                        return internal::__pattern_walk1_n(
                                             std::forward<_ExecutionPolicy>(__exec), __first, __n,
                                             [](_ReferenceType __val) { ::new (std::addressof(__val)) _ValueType; },
                                             __is_vector, __is_parallel);
@@ -310,16 +310,16 @@ uninitialized_value_construct(_ExecutionPolicy&& __exec, _ForwardIterator __firs
     internal::invoke_if_else(
         std::is_trivial<_ValueType>(),
         [&]() {
-            internal::pattern_walk_brick(std::forward<_ExecutionPolicy>(__exec), __first, __last,
-                                         [__is_vector](_ForwardIterator __begin, _ForwardIterator __end) {
-                                             internal::brick_fill(__begin, __end, _ValueType(), __is_vector);
-                                         },
-                                         __is_parallel);
+            internal::__pattern_walk_brick(std::forward<_ExecutionPolicy>(__exec), __first, __last,
+                                           [__is_vector](_ForwardIterator __begin, _ForwardIterator __end) {
+                                               internal::__brick_fill(__begin, __end, _ValueType(), __is_vector);
+                                           },
+                                           __is_parallel);
         },
         [&]() {
-            internal::pattern_walk1(std::forward<_ExecutionPolicy>(__exec), __first, __last,
-                                    [](_ReferenceType __val) { ::new (std::addressof(__val)) _ValueType(); },
-                                    __is_vector, __is_parallel);
+            internal::__pattern_walk1(std::forward<_ExecutionPolicy>(__exec), __first, __last,
+                                      [](_ReferenceType __val) { ::new (std::addressof(__val)) _ValueType(); },
+                                      __is_vector, __is_parallel);
         });
 }
 
@@ -337,17 +337,17 @@ uninitialized_value_construct_n(_ExecutionPolicy&& __exec, _ForwardIterator __fi
     return internal::invoke_if_else(
         std::is_trivial<_ValueType>(),
         [&]() {
-            return internal::pattern_walk_brick_n(std::forward<_ExecutionPolicy>(__exec), __first, __n,
-                                                  [__is_vector](_ForwardIterator __begin, _Size __count) {
-                                                      return internal::brick_fill_n(__begin, __count, _ValueType(),
-                                                                                    __is_vector);
-                                                  },
-                                                  __is_parallel);
+            return internal::__pattern_walk_brick_n(std::forward<_ExecutionPolicy>(__exec), __first, __n,
+                                                    [__is_vector](_ForwardIterator __begin, _Size __count) {
+                                                        return internal::__brick_fill_n(__begin, __count, _ValueType(),
+                                                                                        __is_vector);
+                                                    },
+                                                    __is_parallel);
         },
         [&]() {
-            return internal::pattern_walk1_n(std::forward<_ExecutionPolicy>(__exec), __first, __n,
-                                             [](_ReferenceType __val) { ::new (std::addressof(__val)) _ValueType(); },
-                                             __is_vector, __is_parallel);
+            return internal::__pattern_walk1_n(std::forward<_ExecutionPolicy>(__exec), __first, __n,
+                                               [](_ReferenceType __val) { ::new (std::addressof(__val)) _ValueType(); },
+                                               __is_vector, __is_parallel);
         });
 }
 
