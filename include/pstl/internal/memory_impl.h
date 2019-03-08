@@ -25,7 +25,7 @@ namespace internal
 
 template <class _ForwardIterator, class _OutputIterator>
 _OutputIterator
-brick_uninitialized_move(_ForwardIterator __first, _ForwardIterator __last, _OutputIterator __result,
+__brick_uninitialized_move(_ForwardIterator __first, _ForwardIterator __last, _OutputIterator __result,
                          /*vector=*/std::false_type) noexcept
 {
     typedef typename std::iterator_traits<_OutputIterator>::value_type _ValueType2;
@@ -38,7 +38,7 @@ brick_uninitialized_move(_ForwardIterator __first, _ForwardIterator __last, _Out
 
 template <class _ForwardIterator, class _OutputIterator>
 _OutputIterator
-brick_uninitialized_move(_ForwardIterator __first, _ForwardIterator __last, _OutputIterator __result,
+__brick_uninitialized_move(_ForwardIterator __first, _ForwardIterator __last, _OutputIterator __result,
                          /*vector=*/std::true_type) noexcept
 {
     typedef typename std::iterator_traits<_OutputIterator>::value_type __ValueType2;
