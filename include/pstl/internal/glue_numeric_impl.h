@@ -26,7 +26,7 @@ reduce(_ExecutionPolicy&& __exec, _ForwardIterator __first, _ForwardIterator __l
        _BinaryOperation __binary_op)
 {
     return transform_reduce(std::forward<_ExecutionPolicy>(__exec), __first, __last, __init, __binary_op,
-                            __pstl::internal::no_op());
+                            __pstl::internal::__no_op());
 }
 
 template <class _ExecutionPolicy, class _ForwardIterator, class _Tp>
@@ -34,7 +34,7 @@ __pstl::internal::enable_if_execution_policy<_ExecutionPolicy, _Tp>
 reduce(_ExecutionPolicy&& __exec, _ForwardIterator __first, _ForwardIterator __last, _Tp __init)
 {
     return transform_reduce(std::forward<_ExecutionPolicy>(__exec), __first, __last, __init, std::plus<_Tp>(),
-                            __pstl::internal::no_op());
+                            __pstl::internal::__no_op());
 }
 
 template <class _ExecutionPolicy, class _ForwardIterator>
@@ -43,7 +43,7 @@ reduce(_ExecutionPolicy&& __exec, _ForwardIterator __first, _ForwardIterator __l
 {
     typedef typename iterator_traits<_ForwardIterator>::value_type _ValueType;
     return transform_reduce(std::forward<_ExecutionPolicy>(__exec), __first, __last, _ValueType{},
-                            std::plus<_ValueType>(), __pstl::internal::no_op());
+                            std::plus<_ValueType>(), __pstl::internal::__no_op());
 }
 
 // [transform.reduce]
@@ -95,7 +95,7 @@ exclusive_scan(_ExecutionPolicy&& __exec, _ForwardIterator1 __first, _ForwardIte
                _ForwardIterator2 __result, _Tp __init)
 {
     return transform_exclusive_scan(std::forward<_ExecutionPolicy>(__exec), __first, __last, __result, __init,
-                                    std::plus<_Tp>(), __pstl::internal::no_op());
+                                    std::plus<_Tp>(), __pstl::internal::__no_op());
 }
 
 template <class _ExecutionPolicy, class _ForwardIterator1, class _ForwardIterator2, class _Tp, class _BinaryOperation>
@@ -104,7 +104,7 @@ exclusive_scan(_ExecutionPolicy&& __exec, _ForwardIterator1 __first, _ForwardIte
                _ForwardIterator2 __result, _Tp __init, _BinaryOperation __binary_op)
 {
     return transform_exclusive_scan(std::forward<_ExecutionPolicy>(__exec), __first, __last, __result, __init,
-                                    __binary_op, __pstl::internal::no_op());
+                                    __binary_op, __pstl::internal::__no_op());
 }
 
 // [inclusive.scan]
@@ -116,7 +116,7 @@ inclusive_scan(_ExecutionPolicy&& __exec, _ForwardIterator1 __first, _ForwardIte
 {
     typedef typename iterator_traits<_ForwardIterator1>::value_type _InputType;
     return transform_inclusive_scan(std::forward<_ExecutionPolicy>(__exec), __first, __last, __result,
-                                    std::plus<_InputType>(), __pstl::internal::no_op());
+                                    std::plus<_InputType>(), __pstl::internal::__no_op());
 }
 
 template <class _ExecutionPolicy, class _ForwardIterator1, class _ForwardIterator2, class _BinaryOperation>
@@ -125,7 +125,7 @@ inclusive_scan(_ExecutionPolicy&& __exec, _ForwardIterator1 __first, _ForwardIte
                _ForwardIterator2 __result, _BinaryOperation __binary_op)
 {
     return transform_inclusive_scan(std::forward<_ExecutionPolicy>(__exec), __first, __last, __result, __binary_op,
-                                    __pstl::internal::no_op());
+                                    __pstl::internal::__no_op());
 }
 
 template <class _ExecutionPolicy, class _ForwardIterator1, class _ForwardIterator2, class _Tp, class _BinaryOperation>
@@ -134,7 +134,7 @@ inclusive_scan(_ExecutionPolicy&& __exec, _ForwardIterator1 __first, _ForwardIte
                _ForwardIterator2 __result, _BinaryOperation __binary_op, _Tp __init)
 {
     return transform_inclusive_scan(std::forward<_ExecutionPolicy>(__exec), __first, __last, __result, __binary_op,
-                                    __pstl::internal::no_op(), __init);
+                                    __pstl::internal::__no_op(), __init);
 }
 
 // [transform.exclusive.scan]

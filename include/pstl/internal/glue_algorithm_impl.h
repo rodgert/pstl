@@ -40,7 +40,7 @@ __pstl::internal::enable_if_execution_policy<_ExecutionPolicy, bool>
 all_of(_ExecutionPolicy&& __exec, _ForwardIterator __first, _ForwardIterator __last, _Pred __pred)
 {
     return !std::any_of(std::forward<_ExecutionPolicy>(__exec), __first, __last,
-                        __pstl::internal::not_pred<_Pred>(__pred));
+                        __pstl::internal::__not_pred<_Pred>(__pred));
 }
 
 // [alg.none_of]
@@ -93,7 +93,7 @@ __pstl::internal::enable_if_execution_policy<_ExecutionPolicy, _ForwardIterator>
 find_if_not(_ExecutionPolicy&& __exec, _ForwardIterator __first, _ForwardIterator __last, _Predicate __pred)
 {
     return std::find_if(std::forward<_ExecutionPolicy>(__exec), __first, __last,
-                        __pstl::internal::not_pred<_Predicate>(__pred));
+                        __pstl::internal::__not_pred<_Predicate>(__pred));
 }
 
 template <class _ExecutionPolicy, class _ForwardIterator, class _Tp>
@@ -101,7 +101,7 @@ __pstl::internal::enable_if_execution_policy<_ExecutionPolicy, _ForwardIterator>
 find(_ExecutionPolicy&& __exec, _ForwardIterator __first, _ForwardIterator __last, const _Tp& __value)
 {
     return std::find_if(std::forward<_ExecutionPolicy>(__exec), __first, __last,
-                        __pstl::internal::equal_value<_Tp>(__value));
+                        __pstl::internal::__equal_value<_Tp>(__value));
 }
 
 // [alg.find.end]
@@ -123,7 +123,7 @@ find_end(_ExecutionPolicy&& __exec, _ForwardIterator1 __first, _ForwardIterator1
          _ForwardIterator2 __s_last)
 {
     return std::find_end(std::forward<_ExecutionPolicy>(__exec), __first, __last, __s_first, __s_last,
-                         __pstl::internal::pstl_equal());
+                         __pstl::internal::__pstl_equal());
 }
 
 // [alg.find_first_of]
@@ -145,7 +145,7 @@ find_first_of(_ExecutionPolicy&& __exec, _ForwardIterator1 __first, _ForwardIter
               _ForwardIterator2 __s_first, _ForwardIterator2 __s_last)
 {
     return std::find_first_of(std::forward<_ExecutionPolicy>(__exec), __first, __last, __s_first, __s_last,
-                              __pstl::internal::pstl_equal());
+                              __pstl::internal::__pstl_equal());
 }
 
 // [alg.adjacent_find]
@@ -221,7 +221,7 @@ search(_ExecutionPolicy&& __exec, _ForwardIterator1 __first, _ForwardIterator1 _
        _ForwardIterator2 __s_last)
 {
     return std::search(std::forward<_ExecutionPolicy>(__exec), __first, __last, __s_first, __s_last,
-                       __pstl::internal::pstl_equal());
+                       __pstl::internal::__pstl_equal());
 }
 
 template <class _ExecutionPolicy, class _ForwardIterator, class _Size, class _Tp, class _BinaryPredicate>
@@ -373,7 +373,7 @@ replace(_ExecutionPolicy&& __exec, _ForwardIterator __first, _ForwardIterator __
         const _Tp& __new_value)
 {
     std::replace_if(std::forward<_ExecutionPolicy>(__exec), __first, __last,
-                    __pstl::internal::equal_value<_Tp>(__old_value), __new_value);
+                    __pstl::internal::__equal_value<_Tp>(__old_value), __new_value);
 }
 
 template <class _ExecutionPolicy, class _ForwardIterator1, class _ForwardIterator2, class _UnaryPredicate, class _Tp>
@@ -397,7 +397,7 @@ replace_copy(_ExecutionPolicy&& __exec, _ForwardIterator1 __first, _ForwardItera
              const _Tp& __old_value, const _Tp& __new_value)
 {
     return std::replace_copy_if(std::forward<_ExecutionPolicy>(__exec), __first, __last, __result,
-                                __pstl::internal::equal_value<_Tp>(__old_value), __new_value);
+                                __pstl::internal::__equal_value<_Tp>(__old_value), __new_value);
 }
 
 // [alg.fill]
@@ -459,7 +459,7 @@ remove_copy_if(_ExecutionPolicy&& __exec, _ForwardIterator1 __first, _ForwardIte
                _ForwardIterator2 __result, _Predicate __pred)
 {
     return std::copy_if(std::forward<_ExecutionPolicy>(__exec), __first, __last, __result,
-                        __pstl::internal::not_pred<_Predicate>(__pred));
+                        __pstl::internal::__not_pred<_Predicate>(__pred));
 }
 
 template <class _ExecutionPolicy, class _ForwardIterator1, class _ForwardIterator2, class _Tp>
@@ -468,7 +468,7 @@ remove_copy(_ExecutionPolicy&& __exec, _ForwardIterator1 __first, _ForwardIterat
             const _Tp& __value)
 {
     return std::copy_if(std::forward<_ExecutionPolicy>(__exec), __first, __last, __result,
-                        __pstl::internal::not_equal_value<_Tp>(__value));
+                        __pstl::internal::__not_equal_value<_Tp>(__value));
 }
 
 template <class _ExecutionPolicy, class _ForwardIterator, class _UnaryPredicate>
@@ -487,7 +487,7 @@ __pstl::internal::enable_if_execution_policy<_ExecutionPolicy, _ForwardIterator>
 remove(_ExecutionPolicy&& __exec, _ForwardIterator __first, _ForwardIterator __last, const _Tp& __value)
 {
     return std::remove_if(std::forward<_ExecutionPolicy>(__exec), __first, __last,
-                          __pstl::internal::equal_value<_Tp>(__value));
+                          __pstl::internal::__equal_value<_Tp>(__value));
 }
 
 // [alg.unique]
@@ -507,7 +507,7 @@ template <class _ExecutionPolicy, class _ForwardIterator>
 __pstl::internal::enable_if_execution_policy<_ExecutionPolicy, _ForwardIterator>
 unique(_ExecutionPolicy&& __exec, _ForwardIterator __first, _ForwardIterator __last)
 {
-    return std::unique(std::forward<_ExecutionPolicy>(__exec), __first, __last, __pstl::internal::pstl_equal());
+    return std::unique(std::forward<_ExecutionPolicy>(__exec), __first, __last, __pstl::internal::__pstl_equal());
 }
 
 template <class _ExecutionPolicy, class _ForwardIterator1, class _ForwardIterator2, class _BinaryPredicate>
@@ -526,7 +526,7 @@ template <class _ExecutionPolicy, class _ForwardIterator1, class _ForwardIterato
 __pstl::internal::enable_if_execution_policy<_ExecutionPolicy, _ForwardIterator2>
 unique_copy(_ExecutionPolicy&& __exec, _ForwardIterator1 __first, _ForwardIterator1 __last, _ForwardIterator2 __result)
 {
-    return std::unique_copy(__exec, __first, __last, __result, __pstl::internal::pstl_equal());
+    return std::unique_copy(__exec, __first, __last, __result, __pstl::internal::__pstl_equal());
 }
 
 // [alg.reverse]
@@ -703,7 +703,7 @@ mismatch(_ExecutionPolicy&& __exec, _ForwardIterator1 __first1, _ForwardIterator
          _ForwardIterator2 __last2)
 {
     return std::mismatch(std::forward<_ExecutionPolicy>(__exec), __first1, __last1, __first2, __last2,
-                         __pstl::internal::pstl_equal());
+                         __pstl::internal::__pstl_equal());
 }
 
 template <class _ExecutionPolicy, class _ForwardIterator1, class _ForwardIterator2>
@@ -734,7 +734,7 @@ __pstl::internal::enable_if_execution_policy<_ExecutionPolicy, bool>
 equal(_ExecutionPolicy&& __exec, _ForwardIterator1 __first1, _ForwardIterator1 __last1, _ForwardIterator2 __first2)
 {
     return std::equal(std::forward<_ExecutionPolicy>(__exec), __first1, __last1, __first2,
-                      __pstl::internal::pstl_equal());
+                      __pstl::internal::__pstl_equal());
 }
 
 template <class _ExecutionPolicy, class _ForwardIterator1, class _ForwardIterator2, class _BinaryPredicate>
@@ -754,7 +754,7 @@ __pstl::internal::enable_if_execution_policy<_ExecutionPolicy, bool>
 equal(_ExecutionPolicy&& __exec, _ForwardIterator1 __first1, _ForwardIterator1 __last1, _ForwardIterator2 __first2,
       _ForwardIterator2 __last2)
 {
-    return equal(std::forward<_ExecutionPolicy>(__exec), __first1, __last1, __first2, __pstl::internal::pstl_equal());
+    return equal(std::forward<_ExecutionPolicy>(__exec), __first1, __last1, __first2, __pstl::internal::__pstl_equal());
 }
 
 // [alg.move]
@@ -817,7 +817,7 @@ partial_sort_copy(_ExecutionPolicy&& __exec, _ForwardIterator __first, _ForwardI
                   _RandomAccessIterator __d_first, _RandomAccessIterator __d_last)
 {
     return std::partial_sort_copy(std::forward<_ExecutionPolicy>(__exec), __first, __last, __d_first, __d_last,
-                                  __pstl::internal::pstl_less());
+                                  __pstl::internal::__pstl_less());
 }
 
 // [is.sorted]
@@ -827,7 +827,7 @@ is_sorted_until(_ExecutionPolicy&& __exec, _ForwardIterator __first, _ForwardIte
 {
     using namespace __pstl;
     const _ForwardIterator __res = internal::__pattern_adjacent_find(
-        std::forward<_ExecutionPolicy>(__exec), __first, __last, __pstl::internal::reorder_pred<_Compare>(__comp),
+        std::forward<_ExecutionPolicy>(__exec), __first, __last, __pstl::internal::__reorder_pred<_Compare>(__comp),
         internal::is_parallelization_preferred<_ExecutionPolicy, _ForwardIterator>(__exec),
         internal::is_vectorization_preferred<_ExecutionPolicy, _ForwardIterator>(__exec), /*first_semantic*/ false);
     return __res == __last ? __last : std::next(__res);
@@ -847,7 +847,7 @@ is_sorted(_ExecutionPolicy&& __exec, _ForwardIterator __first, _ForwardIterator 
 {
     using namespace __pstl;
     return internal::__pattern_adjacent_find(
-               std::forward<_ExecutionPolicy>(__exec), __first, __last, internal::reorder_pred<_Compare>(__comp),
+               std::forward<_ExecutionPolicy>(__exec), __first, __last, internal::__reorder_pred<_Compare>(__comp),
                internal::is_parallelization_preferred<_ExecutionPolicy, _ForwardIterator>(__exec),
                internal::is_vectorization_preferred<_ExecutionPolicy, _ForwardIterator>(__exec),
                /*or_semantic*/ true) == __last;
@@ -883,7 +883,7 @@ merge(_ExecutionPolicy&& __exec, _ForwardIterator1 __first1, _ForwardIterator1 _
       _ForwardIterator2 __last2, _ForwardIterator __d_first)
 {
     return std::merge(std::forward<_ExecutionPolicy>(__exec), __first1, __last1, __first2, __last2, __d_first,
-                      __pstl::internal::pstl_less());
+                      __pstl::internal::__pstl_less());
 }
 
 template <class _ExecutionPolicy, class _BidirectionalIterator, class _Compare>
@@ -927,7 +927,7 @@ includes(_ExecutionPolicy&& __exec, _ForwardIterator1 __first1, _ForwardIterator
          _ForwardIterator2 __last2)
 {
     return std::includes(std::forward<_ExecutionPolicy>(__exec), __first1, __last1, __first2, __last2,
-                         __pstl::internal::pstl_less());
+                         __pstl::internal::__pstl_less());
 }
 
 // [set.union]
@@ -953,7 +953,7 @@ set_union(_ExecutionPolicy&& __exec, _ForwardIterator1 __first1, _ForwardIterato
           _ForwardIterator2 __last2, _ForwardIterator __result)
 {
     return std::set_union(std::forward<_ExecutionPolicy>(__exec), __first1, __last1, __first2, __last2, __result,
-                          __pstl::internal::pstl_less());
+                          __pstl::internal::__pstl_less());
 }
 
 // [set.intersection]
@@ -979,7 +979,7 @@ set_intersection(_ExecutionPolicy&& __exec, _ForwardIterator1 __first1, _Forward
                  _ForwardIterator2 __first2, _ForwardIterator2 __last2, _ForwardIterator __result)
 {
     return std::set_intersection(std::forward<_ExecutionPolicy>(__exec), __first1, __last1, __first2, __last2, __result,
-                                 __pstl::internal::pstl_less());
+                                 __pstl::internal::__pstl_less());
 }
 
 // [set.difference]
@@ -1005,7 +1005,7 @@ set_difference(_ExecutionPolicy&& __exec, _ForwardIterator1 __first1, _ForwardIt
                _ForwardIterator2 __first2, _ForwardIterator2 __last2, _ForwardIterator __result)
 {
     return std::set_difference(std::forward<_ExecutionPolicy>(__exec), __first1, __last1, __first2, __last2, __result,
-                               __pstl::internal::pstl_less());
+                               __pstl::internal::__pstl_less());
 }
 
 // [set.symmetric.difference]
@@ -1032,7 +1032,7 @@ set_symmetric_difference(_ExecutionPolicy&& __exec, _ForwardIterator1 __first1, 
                          _ForwardIterator2 __first2, _ForwardIterator2 __last2, _ForwardIterator __result)
 {
     return std::set_symmetric_difference(std::forward<_ExecutionPolicy>(__exec), __first1, __last1, __first2, __last2,
-                                         __result, __pstl::internal::pstl_less());
+                                         __result, __pstl::internal::__pstl_less());
 }
 
 // [is.heap]
@@ -1096,7 +1096,7 @@ __pstl::internal::enable_if_execution_policy<_ExecutionPolicy, _ForwardIterator>
 max_element(_ExecutionPolicy&& __exec, _ForwardIterator __first, _ForwardIterator __last, _Compare __comp)
 {
     return min_element(std::forward<_ExecutionPolicy>(__exec), __first, __last,
-                       __pstl::internal::reorder_pred<_Compare>(__comp));
+                       __pstl::internal::__reorder_pred<_Compare>(__comp));
 }
 
 template <class _ExecutionPolicy, class _ForwardIterator>
@@ -1105,7 +1105,7 @@ max_element(_ExecutionPolicy&& __exec, _ForwardIterator __first, _ForwardIterato
 {
     typedef typename std::iterator_traits<_ForwardIterator>::value_type _InputType;
     return std::min_element(std::forward<_ExecutionPolicy>(__exec), __first, __last,
-                            __pstl::internal::reorder_pred<std::less<_InputType>>(std::less<_InputType>()));
+                            __pstl::internal::__reorder_pred<std::less<_InputType>>(std::less<_InputType>()));
 }
 
 template <class _ExecutionPolicy, class _ForwardIterator, class _Compare>
@@ -1170,7 +1170,7 @@ lexicographical_compare(_ExecutionPolicy&& __exec, _ForwardIterator1 __first1, _
                         _ForwardIterator2 __first2, _ForwardIterator2 __last2)
 {
     return std::lexicographical_compare(std::forward<_ExecutionPolicy>(__exec), __first1, __last1, __first2, __last2,
-                                        __pstl::internal::pstl_less());
+                                        __pstl::internal::__pstl_less());
 }
 
 } // namespace std

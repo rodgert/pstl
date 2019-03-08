@@ -71,7 +71,7 @@ __pattern_transform_reduce(_ExecutionPolicy&& __exec, _RandomAccessIterator1 __f
                            _RandomAccessIterator2 __first2, _Tp __init, _BinaryOperation1 __binary_op1,
                            _BinaryOperation2 __binary_op2, _IsVector __is_vector, /*is_parallel=*/std::true_type)
 {
-    return internal::except_handler([&]() {
+    return internal::__except_handler([&]() {
         return par_backend::parallel_transform_reduce(
             std::forward<_ExecutionPolicy>(__exec), __first1, __last1,
             [__first1, __first2, __binary_op2](_RandomAccessIterator1 __i) mutable {
@@ -133,7 +133,7 @@ __pattern_transform_reduce(_ExecutionPolicy&& __exec, _ForwardIterator __first, 
                            _BinaryOperation __binary_op, _UnaryOperation __unary_op, _IsVector __is_vector,
                            /*is_parallel=*/std::true_type)
 {
-    return except_handler([&]() {
+    return __except_handler([&]() {
         return par_backend::parallel_transform_reduce(
             std::forward<_ExecutionPolicy>(__exec), __first, __last,
             [__unary_op](_ForwardIterator __i) mutable { return __unary_op(*__i); }, __init, __binary_op,
@@ -238,7 +238,7 @@ __pattern_transform_scan(_ExecutionPolicy&& __exec, _RandomAccessIterator __firs
 {
     typedef typename std::iterator_traits<_RandomAccessIterator>::difference_type _DifferenceType;
 
-    return internal::except_handler([&]() {
+    return internal::__except_handler([&]() {
         par_backend::parallel_transform_scan(
             std::forward<_ExecutionPolicy>(__exec), __last - __first,
             [__first, __unary_op](_DifferenceType __i) mutable { return __unary_op(__first[__i]); }, __init,
@@ -274,7 +274,7 @@ __pattern_transform_scan(_ExecutionPolicy&& __exec, _RandomAccessIterator __firs
     {
         return __result;
     }
-    return except_handler([&]() {
+    return __except_handler([&]() {
         par_backend::parallel_strict_scan(
             std::forward<_ExecutionPolicy>(__exec), __n, __init,
             [__first, __unary_op, __binary_op, __result, __is_vector](_DifferenceType __i, _DifferenceType __len) {

@@ -796,7 +796,7 @@ simd_find_first_of(_ForwardIterator1 __first, _ForwardIterator1 __last, _Forward
         for (; __first != __last; ++__first)
         {
             if (simd_or(__s_first, __n2,
-                        internal::equal_value_by_pred<decltype(*__first), _BinaryPredicate>(*__first, __pred)))
+                        internal::__equal_value_by_pred<decltype(*__first), _BinaryPredicate>(*__first, __pred)))
             {
                 return __first;
             }
