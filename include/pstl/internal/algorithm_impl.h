@@ -1748,6 +1748,7 @@ __pattern_is_partitioned(_ExecutionPolicy&& __exec, _ForwardIterator __first, _F
                         // find first element that don't satisfy pred
                         _ForwardIterator __x =
                             __brick_find_if(__i + 1, __j, __not_pred<_UnaryPredicate>(__pred), __is_vector);
+			
                         if (__x != __j)
                         {
                             // find first element after "x" that satisfy pred
