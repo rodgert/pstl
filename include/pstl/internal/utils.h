@@ -15,7 +15,7 @@
 
 namespace __pstl
 {
-namespace internal
+namespace __internal
 {
 
 template <typename _Fp>
@@ -216,7 +216,7 @@ __cmp_iterators_by_values(_ForwardIterator __a, _ForwardIterator __b, _Compare _
     }
 }
 
-} // namespace internal
+} // namespace __internal
 } // namespace __pstl
 
 #endif /* __PSTL_utils_H */

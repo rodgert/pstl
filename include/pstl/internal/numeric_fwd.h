@@ -15,7 +15,7 @@
 
 namespace __pstl
 {
-namespace internal
+namespace __internal
 {
 
 //------------------------------------------------------------------------
@@ -141,6 +141,6 @@ __pattern_adjacent_difference(_ExecutionPolicy&&, _ForwardIterator, _ForwardIter
                               _IsVector, /*is_parallel*/ std::true_type);
 #endif
 
-} // namespace internal
+} // namespace __internal
 } // namespace __pstl
 #endif /* __PSTL_numeric_fwd_H */

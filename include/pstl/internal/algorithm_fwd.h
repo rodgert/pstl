@@ -15,7 +15,7 @@
 
 namespace __pstl
 {
-namespace internal
+namespace __internal
 {
 
 //------------------------------------------------------------------------
@@ -42,12 +42,6 @@ template <class _ExecutionPolicy, class _ForwardIterator, class _Pred, class _Is
 bool
 __pattern_any_of(_ExecutionPolicy&&, _ForwardIterator, _ForwardIterator, _Pred, _IsVector,
                  /*parallel=*/std::true_type);
-#endif
-
-#if 0
-  // TODO does this even need forwarding?
-template <class _ForwardIterator, class _Size, class _Function>
-_ForwardIterator for_each_n_it_serial(_ForwardIterator, _Size, _Function);
 #endif
 
 //------------------------------------------------------------------------
@@ -1337,6 +1331,6 @@ __pattern_lexicographical_compare(_ExecutionPolicy&&, _ForwardIterator1, _Forwar
                                   _ForwardIterator2, _Compare, _IsVector, /* is_parallel = */ std::true_type) noexcept;
 #endif
 
-} // namespace internal
+} // namespace __internal
 } // namespace __pstl
 #endif /* __PSTL_algorithm_fwd_H */

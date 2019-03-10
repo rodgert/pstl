@@ -17,7 +17,7 @@
 
 namespace __pstl
 {
-namespace internal
+namespace __internal
 {
 
 using namespace __pstl::execution;
@@ -109,23 +109,20 @@ template <typename _ExecutionPolicy>
 using __collector_t = typename __policy_traits<typename std::decay<_ExecutionPolicy>::type>::__collector_type;
 
 template <typename _ExecutionPolicy>
-using __allow_vector = typename internal::__policy_traits<typename std::decay<_ExecutionPolicy>::type>::__allow_vector;
+using __allow_vector = typename __policy_traits<typename std::decay<_ExecutionPolicy>::type>::__allow_vector;
 
 template <typename _ExecutionPolicy>
-using __allow_unsequenced =
-    typename internal::__policy_traits<typename std::decay<_ExecutionPolicy>::type>::__allow_unsequenced;
+using __allow_unsequenced = typename __policy_traits<typename std::decay<_ExecutionPolicy>::type>::__allow_unsequenced;
 
 template <typename _ExecutionPolicy>
-using __allow_parallel =
-    typename internal::__policy_traits<typename std::decay<_ExecutionPolicy>::type>::__allow_parallel;
+using __allow_parallel = typename __policy_traits<typename std::decay<_ExecutionPolicy>::type>::__allow_parallel;
 
 template <typename _ExecutionPolicy, typename... _IteratorTypes>
 auto
 __is_vectorization_preferred(_ExecutionPolicy&& __exec)
     -> decltype(__lazy_and(__exec.__allow_vector(), typename __is_random_access_iterator<_IteratorTypes...>::type()))
 {
-    return internal::__lazy_and(__exec.__allow_vector(),
-                                typename __is_random_access_iterator<_IteratorTypes...>::type());
+    return __lazy_and(__exec.__allow_vector(), typename __is_random_access_iterator<_IteratorTypes...>::type());
 }
 
 template <typename _ExecutionPolicy, typename... _IteratorTypes>
@@ -133,8 +130,7 @@ auto
 __is_parallelization_preferred(_ExecutionPolicy&& __exec)
     -> decltype(__lazy_and(__exec.__allow_parallel(), typename __is_random_access_iterator<_IteratorTypes...>::type()))
 {
-    return internal::__lazy_and(__exec.__allow_parallel(),
-                                typename __is_random_access_iterator<_IteratorTypes...>::type());
+    return __lazy_and(__exec.__allow_parallel(), typename __is_random_access_iterator<_IteratorTypes...>::type());
 }
 
 template <typename policy, typename... _IteratorTypes>
@@ -153,7 +149,7 @@ struct __prefer_parallel_tag
     typedef std::integral_constant<bool, value> type;
 };
 
-} // namespace internal
+} // namespace __internal
 } // namespace __pstl
 
 #endif /* __PSTL_execution_impl_H */

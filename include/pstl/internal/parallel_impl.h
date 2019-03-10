@@ -16,7 +16,7 @@
 
 namespace __pstl
 {
-namespace internal
+namespace __internal
 {
 
 //------------------------------------------------------------------------
@@ -75,7 +75,7 @@ __parallel_or(_ExecutionPolicy&& __exec, _Index __first, _Index __last, _Brick _
     return __found;
 }
 
-} // namespace internal
+} // namespace __internal
 } // namespace __pstl
 
 #endif /* __PSTL_parallel_impl_H */

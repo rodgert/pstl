@@ -24,7 +24,7 @@
 
 namespace __pstl
 {
-namespace internal
+namespace __internal
 {
 
 //------------------------------------------------------------------------
@@ -71,7 +71,7 @@ __pattern_transform_reduce(_ExecutionPolicy&& __exec, _RandomAccessIterator1 __f
                            _RandomAccessIterator2 __first2, _Tp __init, _BinaryOperation1 __binary_op1,
                            _BinaryOperation2 __binary_op2, _IsVector __is_vector, /*is_parallel=*/std::true_type)
 {
-    return internal::__except_handler([&]() {
+    return __except_handler([&]() {
         return __par_backend::__parallel_transform_reduce(
             std::forward<_ExecutionPolicy>(__exec), __first1, __last1,
             [__first1, __first2, __binary_op2](_RandomAccessIterator1 __i) mutable {
@@ -81,8 +81,8 @@ __pattern_transform_reduce(_ExecutionPolicy&& __exec, _RandomAccessIterator1 __f
             __binary_op1, // Combine
             [__first1, __first2, __binary_op1, __binary_op2,
              __is_vector](_RandomAccessIterator1 __i, _RandomAccessIterator1 __j, _Tp __init) -> _Tp {
-                return internal::__brick_transform_reduce(__i, __j, __first2 + (__i - __first1), __init, __binary_op1,
-                                                          __binary_op2, __is_vector);
+                return __brick_transform_reduce(__i, __j, __first2 + (__i - __first1), __init, __binary_op1,
+                                                __binary_op2, __is_vector);
             });
     });
 }
@@ -223,8 +223,7 @@ __pattern_transform_scan(_ExecutionPolicy&&, _ForwardIterator __first, _ForwardI
                          _OutputIterator __result, _UnaryOperation __unary_op, _Tp __init, _BinaryOperation __binary_op,
                          _Inclusive, _IsVector __is_vector, /*is_parallel=*/std::false_type) noexcept
 {
-    return internal::__brick_transform_scan(__first, __last, __result, __unary_op, __init, __binary_op, _Inclusive(),
-                                            __is_vector)
+    return __brick_transform_scan(__first, __last, __result, __unary_op, __init, __binary_op, _Inclusive(), __is_vector)
         .first;
 }
 
@@ -238,20 +237,20 @@ __pattern_transform_scan(_ExecutionPolicy&& __exec, _RandomAccessIterator __firs
 {
     typedef typename std::iterator_traits<_RandomAccessIterator>::difference_type _DifferenceType;
 
-    return internal::__except_handler([&]() {
+    return __except_handler([&]() {
         __par_backend::__parallel_transform_scan(
             std::forward<_ExecutionPolicy>(__exec), __last - __first,
             [__first, __unary_op](_DifferenceType __i) mutable { return __unary_op(__first[__i]); }, __init,
             __binary_op,
             [__first, __unary_op, __binary_op](_DifferenceType __i, _DifferenceType __j, _Tp __init) {
                 // Execute serial __brick_transform_reduce, due to the explicit SIMD vectorization (reduction) requires a commutative operation for the guarantee of correct scan.
-                return internal::__brick_transform_reduce(__first + __i, __first + __j, __init, __binary_op, __unary_op,
-                                                          /*__is_vector*/ std::false_type());
+                return __brick_transform_reduce(__first + __i, __first + __j, __init, __binary_op, __unary_op,
+                                                /*__is_vector*/ std::false_type());
             },
             [__first, __unary_op, __binary_op, __result, __is_vector](_DifferenceType __i, _DifferenceType __j,
                                                                       _Tp __init) {
-                return internal::__brick_transform_scan(__first + __i, __first + __j, __result + __i, __unary_op,
-                                                        __init, __binary_op, _Inclusive(), __is_vector)
+                return __brick_transform_scan(__first + __i, __first + __j, __result + __i, __unary_op, __init,
+                                              __binary_op, _Inclusive(), __is_vector)
                     .second;
             });
         return __result + (__last - __first);
@@ -333,7 +332,7 @@ __pattern_adjacent_difference(_ExecutionPolicy&&, _ForwardIterator __first, _For
                               _OutputIterator __d_first, _BinaryOperation __op, _IsVector __is_vector,
                               /*is_parallel*/ std::false_type) noexcept
 {
-    return internal::__brick_adjacent_difference(__first, __last, __d_first, __op, __is_vector);
+    return __brick_adjacent_difference(__first, __last, __d_first, __op, __is_vector);
 }
 
 #if __PSTL_USE_PAR_POLICIES
@@ -362,7 +361,7 @@ __pattern_adjacent_difference(_ExecutionPolicy&& __exec, _ForwardIterator1 __fir
 }
 #endif
 
-} // namespace internal
+} // namespace __internal
 } // namespace __pstl
 
 #endif /* __PSTL_numeric_impl_H */
