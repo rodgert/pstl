@@ -16,7 +16,7 @@
 
 namespace __pstl
 {
-namespace par_backend
+namespace __par_backend
 {
 
 //! Destroy sequence [xs,xe)
@@ -189,7 +189,7 @@ class __stack
     }
 };
 
-} // namespace par_backend
+} // namespace __par_backend
 } // namespace __pstl
 
 #endif /* __PSTL_parallel_backend_utils_H */
