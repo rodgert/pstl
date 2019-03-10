@@ -929,7 +929,7 @@ __brick_calc_mask_1(_ForwardIterator __first, _ForwardIterator __last, bool* __r
     auto __count_true = _DifferenceType(0);
     auto __size = __last - __first;
 
-    static_assert(internal::is_random_access_iterator<_ForwardIterator>::value,
+    static_assert(internal::__is_random_access_iterator<_ForwardIterator>::value,
                   "Pattern-brick error. Should be a random access iterator.");
 
     for (; __first != __last; ++__first, ++__mask)
@@ -2511,7 +2511,7 @@ _OutputIterator
 __pattern_generate_n(_ExecutionPolicy&& __exec, _OutputIterator __first, _Size __count, _Generator __g,
                      /*is_parallel=*/std::true_type, _IsVector __is_vector)
 {
-    static_assert(internal::is_random_access_iterator<_OutputIterator>::value,
+    static_assert(internal::__is_random_access_iterator<_OutputIterator>::value,
                   "Pattern-brick error. Should be a random access iterator.");
     return internal::__pattern_generate(std::forward<_ExecutionPolicy>(__exec), __first, __first + __count, __g,
                                         std::true_type(), __is_vector);
