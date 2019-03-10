@@ -72,7 +72,7 @@ __pattern_transform_reduce(_ExecutionPolicy&& __exec, _RandomAccessIterator1 __f
                            _BinaryOperation2 __binary_op2, _IsVector __is_vector, /*is_parallel=*/std::true_type)
 {
     return internal::__except_handler([&]() {
-        return par_backend::parallel_transform_reduce(
+        return par_backend::__parallel_transform_reduce(
             std::forward<_ExecutionPolicy>(__exec), __first1, __last1,
             [__first1, __first2, __binary_op2](_RandomAccessIterator1 __i) mutable {
                 return __binary_op2(*__i, *(__first2 + (__i - __first1)));
@@ -134,7 +134,7 @@ __pattern_transform_reduce(_ExecutionPolicy&& __exec, _ForwardIterator __first, 
                            /*is_parallel=*/std::true_type)
 {
     return __except_handler([&]() {
-        return par_backend::parallel_transform_reduce(
+        return par_backend::__parallel_transform_reduce(
             std::forward<_ExecutionPolicy>(__exec), __first, __last,
             [__unary_op](_ForwardIterator __i) mutable { return __unary_op(*__i); }, __init, __binary_op,
             [__unary_op, __binary_op, __is_vector](_ForwardIterator __i, _ForwardIterator __j, _Tp __init) {
@@ -239,7 +239,7 @@ __pattern_transform_scan(_ExecutionPolicy&& __exec, _RandomAccessIterator __firs
     typedef typename std::iterator_traits<_RandomAccessIterator>::difference_type _DifferenceType;
 
     return internal::__except_handler([&]() {
-        par_backend::parallel_transform_scan(
+        par_backend::__parallel_transform_scan(
             std::forward<_ExecutionPolicy>(__exec), __last - __first,
             [__first, __unary_op](_DifferenceType __i) mutable { return __unary_op(__first[__i]); }, __init,
             __binary_op,
@@ -349,15 +349,14 @@ __pattern_adjacent_difference(_ExecutionPolicy&& __exec, _ForwardIterator1 __fir
     typedef typename std::iterator_traits<_ForwardIterator2>::reference _ReferenceType2;
 
     *__d_first = *__first;
-    par_backend::parallel_for(std::forward<_ExecutionPolicy>(__exec), __first, __last - 1,
-                              [&__op, __is_vector, __d_first, __first](_ForwardIterator1 __b, _ForwardIterator1 __e) {
-                                  _ForwardIterator2 __d_b = __d_first + (__b - __first);
-                                  __brick_walk3(__b, __e, __b + 1, __d_b + 1,
-                                                [&__op](_ReferenceType1 __x, _ReferenceType1 __y, _ReferenceType2 __z) {
-                                                    __z = __op(__y, __x);
-                                                },
-                                                __is_vector);
-                              });
+    par_backend::__parallel_for(std::forward<_ExecutionPolicy>(__exec), __first, __last - 1,
+                                [&__op, __is_vector, __d_first, __first](_ForwardIterator1 __b, _ForwardIterator1 __e) {
+                                    _ForwardIterator2 __d_b = __d_first + (__b - __first);
+                                    __brick_walk3(__b, __e, __b + 1, __d_b + 1,
+                                                  [&__op](_ReferenceType1 __x, _ReferenceType1 __y,
+                                                          _ReferenceType2 __z) { __z = __op(__y, __x); },
+                                                  __is_vector);
+                                });
     return __d_first + (__last - __first);
 }
 #endif
