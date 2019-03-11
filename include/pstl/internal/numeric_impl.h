@@ -47,7 +47,7 @@ __brick_transform_reduce(_ForwardIterator1 __first1, _ForwardIterator1 __last1, 
                          /*is_vector=*/std::true_type) noexcept
 {
     typedef typename std::iterator_traits<_ForwardIterator1>::difference_type _DifferenceType;
-    return unseq_backend::simd_transform_reduce(
+    return __unseq_backend::__simd_transform_reduce(
         __last1 - __first1, __init, __binary_op1,
         [=, &__binary_op2](_DifferenceType __i) { return __binary_op2(__first1[__i], __first2[__i]); });
 }
@@ -110,7 +110,7 @@ __brick_transform_reduce(_ForwardIterator __first, _ForwardIterator __last, _Tp 
                          _UnaryOperation __unary_op, /*is_vector=*/std::true_type) noexcept
 {
     typedef typename std::iterator_traits<_ForwardIterator>::difference_type _DifferenceType;
-    return unseq_backend::simd_transform_reduce(
+    return __unseq_backend::__simd_transform_reduce(
         __last - __first, __init, __binary_op,
         [=, &__unary_op](_DifferenceType __i) { return __unary_op(__first[__i]); });
 }
@@ -197,7 +197,8 @@ __brick_transform_scan(_ForwardIterator __first, _ForwardIterator __last, _Outpu
                        /*is_vector=*/std::true_type) noexcept
 {
 #if (__PSTL_UDS_PRESENT)
-    return unseq_backend::simd_scan(__first, __last - __first, __result, __unary_op, __init, __binary_op, _Inclusive());
+    return __unseq_backend::__simd_scan(__first, __last - __first, __result, __unary_op, __init, __binary_op,
+                                        _Inclusive());
 #else
     // We need to call serial brick here to call function for inclusive and exclusive scan that depends on _Inclusive() value
     return __brick_transform_scan(__first, __last, __result, __unary_op, __init, __binary_op, _Inclusive(),
@@ -320,7 +321,7 @@ __brick_adjacent_difference(_ForwardIterator1 __first, _ForwardIterator1 __last,
 
     auto __n = __last - __first;
     *__d_first = *__first;
-    return unseq_backend::simd_walk_3(
+    return __unseq_backend::__simd_walk_3(
         __first + 1, __n - 1, __first, __d_first + 1,
         [&__op](_ReferenceType1 __x, _ReferenceType1 __y, _ReferenceType2 __z) { __z = __op(__x, __y); });
 }

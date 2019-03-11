@@ -47,7 +47,7 @@ bool
 __brick_any_of(const _ForwardIterator __first, const _ForwardIterator __last, _Pred __pred,
                /*__is_vector=*/std::true_type) noexcept
 {
-    return unseq_backend::simd_or(__first, __last - __first, __pred);
+    return __unseq_backend::__simd_or(__first, __last - __first, __pred);
 };
 
 template <class _ExecutionPolicy, class _ForwardIterator, class _Pred, class _IsVector>
@@ -102,7 +102,7 @@ void
 __brick_walk1(_RandomAccessIterator __first, _RandomAccessIterator __last, _Function __f,
               /*vector=*/std::true_type) noexcept
 {
-    unseq_backend::simd_walk_1(__first, __last - __first, __f);
+    __unseq_backend::__simd_walk_1(__first, __last - __first, __f);
 }
 
 template <class _ExecutionPolicy, class _ForwardIterator, class _Function, class _IsVector>
@@ -167,7 +167,7 @@ _RandomAccessIterator
 __brick_walk1_n(_RandomAccessIterator __first, _DifferenceType __n, _Function __f,
                 /*vectorTag=*/std::true_type) noexcept
 {
-    return unseq_backend::simd_walk_1(__first, __n, __f);
+    return __unseq_backend::__simd_walk_1(__first, __n, __f);
 }
 
 template <class _ExecutionPolicy, class _ForwardIterator, class _Size, class _Function, class _IsVector>
@@ -233,7 +233,7 @@ _ForwardIterator2
 __brick_walk2(_ForwardIterator1 __first1, _ForwardIterator1 __last1, _ForwardIterator2 __first2, _Function __f,
               /*vector=*/std::true_type) noexcept
 {
-    return unseq_backend::simd_walk_2(__first1, __last1 - __first1, __first2, __f);
+    return __unseq_backend::__simd_walk_2(__first1, __last1 - __first1, __first2, __f);
 }
 
 template <class _ForwardIterator1, class _Size, class _ForwardIterator2, class _Function>
@@ -251,7 +251,7 @@ _ForwardIterator2
 __brick_walk2_n(_ForwardIterator1 __first1, _Size __n, _ForwardIterator2 __first2, _Function __f,
                 /*vector=*/std::true_type) noexcept
 {
-    return unseq_backend::simd_walk_2(__first1, __n, __first2, __f);
+    return __unseq_backend::__simd_walk_2(__first1, __n, __first2, __f);
 }
 
 template <class _ExecutionPolicy, class _ForwardIterator1, class _ForwardIterator2, class _Function, class _IsVector>
@@ -368,7 +368,7 @@ _RandomAccessIterator3
 __brick_walk3(_RandomAccessIterator1 __first1, _RandomAccessIterator1 __last1, _RandomAccessIterator2 __first2,
               _RandomAccessIterator3 __first3, _Function __f, /*vector=*/std::true_type) noexcept
 {
-    return unseq_backend::simd_walk_3(__first1, __last1 - __first1, __first2, __first3, __f);
+    return __unseq_backend::__simd_walk_3(__first1, __last1 - __first1, __first2, __first3, __f);
 }
 
 template <class _ExecutionPolicy, class _ForwardIterator1, class _ForwardIterator2, class _ForwardIterator3,
@@ -416,8 +416,8 @@ bool
 __brick_equal(_RandomAccessIterator1 __first1, _RandomAccessIterator1 __last1, _RandomAccessIterator2 __first2,
               _BinaryPredicate __p, /* is_vector = */ std::true_type) noexcept
 {
-    return unseq_backend::simd_first(__first1, __last1 - __first1, __first2, __not_pred<_BinaryPredicate>(__p)).first ==
-           __last1;
+    return __unseq_backend::__simd_first(__first1, __last1 - __first1, __first2, __not_pred<_BinaryPredicate>(__p))
+               .first == __last1;
 }
 
 template <class _ExecutionPolicy, class _ForwardIterator1, class _ForwardIterator2, class _BinaryPredicate,
@@ -464,7 +464,7 @@ __brick_find_if(_RandomAccessIterator __first, _RandomAccessIterator __last, _Pr
                 /*is_vector=*/std::true_type) noexcept
 {
     typedef typename std::iterator_traits<_RandomAccessIterator>::difference_type _SizeType;
-    return unseq_backend::simd_first(
+    return __unseq_backend::__simd_first(
         __first, _SizeType(0), __last - __first,
         [&__pred](_RandomAccessIterator __it, _SizeType __i) { return __pred(__it[__i]); });
 }
@@ -664,7 +664,7 @@ _ForwardIterator1
 __brick_find_first_of(_ForwardIterator1 __first, _ForwardIterator1 __last, _ForwardIterator2 __s_first,
                       _ForwardIterator2 __s_last, _BinaryPredicate __pred, /*__is_vector=*/std::true_type) noexcept
 {
-    return unseq_backend::simd_find_first_of(__first, __last, __s_first, __s_last, __pred);
+    return __unseq_backend::__simd_find_first_of(__first, __last, __s_first, __s_last, __pred);
 }
 
 template <class _ExecutionPolicy, class _ForwardIterator1, class _ForwardIterator2, class _BinaryPredicate,
@@ -828,8 +828,8 @@ template <class _ForwardIterator, class _Size, class _OutputIterator>
 _OutputIterator
 __brick_copy_n(_ForwardIterator __first, _Size __n, _OutputIterator __result, /*vector=*/std::true_type) noexcept
 {
-    return unseq_backend::simd_assign(__first, __n, __result,
-                                      [](_ForwardIterator __first, _OutputIterator __result) { *__result = *__first; });
+    return __unseq_backend::__simd_assign(
+        __first, __n, __result, [](_ForwardIterator __first, _OutputIterator __result) { *__result = *__first; });
 }
 
 //------------------------------------------------------------------------
@@ -848,7 +848,7 @@ _OutputIterator
 __brick_copy(_RandomAccessIterator __first, _RandomAccessIterator __last, _OutputIterator __result,
              /*vector=*/std::true_type) noexcept
 {
-    return unseq_backend::simd_assign(
+    return __unseq_backend::__simd_assign(
         __first, __last - __first, __result,
         [](_RandomAccessIterator __first, _OutputIterator __result) { *__result = *__first; });
 }
@@ -869,7 +869,7 @@ _OutputIterator
 __brick_move(_RandomAccessIterator __first, _RandomAccessIterator __last, _OutputIterator __result,
              /*vector=*/std::true_type) noexcept
 {
-    return unseq_backend::simd_assign(
+    return __unseq_backend::__simd_assign(
         __first, __last - __first, __result,
         [](_RandomAccessIterator __first, _OutputIterator __result) { *__result = std::move(*__first); });
 }
@@ -891,8 +891,8 @@ __brick_swap_ranges(_ForwardIterator __first, _ForwardIterator __last, _OutputIt
                     /*vector=*/std::true_type) noexcept
 {
     using std::iter_swap;
-    return unseq_backend::simd_assign(__first, __last - __first, __result,
-                                      iter_swap<_ForwardIterator, _OutputIterator>);
+    return __unseq_backend::__simd_assign(__first, __last - __first, __result,
+                                          iter_swap<_ForwardIterator, _OutputIterator>);
 }
 
 //------------------------------------------------------------------------
@@ -912,7 +912,7 @@ __brick_copy_if(_ForwardIterator __first, _ForwardIterator __last, _OutputIterat
                 /*vector=*/std::true_type) noexcept
 {
 #if (__PSTL_MONOTONIC_PRESENT)
-    return unseq_backend::simd_copy_if(__first, __last - __first, __result, __pred);
+    return __unseq_backend::__simd_copy_if(__first, __last - __first, __result, __pred);
 #else
     return std::copy_if(__first, __last, __result, __pred);
 #endif
@@ -946,7 +946,7 @@ std::pair<_DifferenceType, _DifferenceType>
 __brick_calc_mask_1(_RandomAccessIterator __first, _RandomAccessIterator __last, bool* __mask, _UnaryPredicate __pred,
                     /*vector=*/std::true_type) noexcept
 {
-    auto __result = unseq_backend::simd_calc_mask_1(__first, __last - __first, __mask, __pred);
+    auto __result = __unseq_backend::__simd_calc_mask_1(__first, __last - __first, __mask, __pred);
     return std::make_pair(__result, (__last - __first) - __result);
 }
 
@@ -971,7 +971,7 @@ __brick_copy_by_mask(_ForwardIterator __first, _ForwardIterator __last, _OutputI
                      bool* __restrict __mask, _Assigner __assigner, /*vector=*/std::true_type) noexcept
 {
 #if (__PSTL_MONOTONIC_PRESENT)
-    unseq_backend::simd_copy_by_mask(__first, __last - __first, __result, __mask, __assigner);
+    __unseq_backend::__simd_copy_by_mask(__first, __last - __first, __result, __mask, __assigner);
 #else
     __brick_copy_by_mask(__first, __last, __result, __mask, __assigner, std::false_type());
 #endif
@@ -1003,7 +1003,7 @@ __brick_partition_by_mask(_RandomAccessIterator __first, _RandomAccessIterator _
                           _OutputIterator2 __out_false, bool* __mask, /*vector=*/std::true_type) noexcept
 {
 #if (__PSTL_MONOTONIC_PRESENT)
-    unseq_backend::simd_partition_by_mask(__first, __last - __first, __out_true, __out_false, __mask);
+    __unseq_backend::__simd_partition_by_mask(__first, __last - __first, __out_true, __out_false, __mask);
 #else
     __brick_partition_by_mask(__first, __last, __out_true, __out_false, __mask, std::false_type());
 #endif
@@ -1062,7 +1062,7 @@ typename std::iterator_traits<_ForwardIterator>::difference_type
 __brick_count(_ForwardIterator __first, _ForwardIterator __last, _Predicate __pred,
               /* is_vector = */ std::true_type) noexcept
 {
-    return unseq_backend::simd_count(__first, __last - __first, __pred);
+    return __unseq_backend::__simd_count(__first, __last - __first, __pred);
 }
 
 template <class _ForwardIterator, class _Predicate>
@@ -1253,7 +1253,7 @@ __brick_unique_copy(_RandomAccessIterator __first, _RandomAccessIterator __last,
                     _BinaryPredicate __pred, /*vector=*/std::true_type) noexcept
 {
 #if (__PSTL_MONOTONIC_PRESENT)
-    return unseq_backend::simd_unique_copy(__first, __last - __first, __result, __pred);
+    return __unseq_backend::__simd_unique_copy(__first, __last - __first, __result, __pred);
 #else
     return std::unique_copy(__first, __last, __result, __pred);
 #endif
@@ -1287,7 +1287,7 @@ _DifferenceType
 __brick_calc_mask_2(_RandomAccessIterator __first, _RandomAccessIterator __last, bool* __restrict __mask,
                     _BinaryPredicate __pred, /*vector=*/std::true_type) noexcept
 {
-    return unseq_backend::simd_calc_mask_2(__first, __last - __first, __mask, __pred);
+    return __unseq_backend::__simd_calc_mask_2(__first, __last - __first, __mask, __pred);
 }
 
 #if __PSTL_USE_PAR_POLICIES
@@ -1359,11 +1359,11 @@ __brick_reverse(_BidirectionalIterator __first, _BidirectionalIterator __last, /
     typedef typename std::iterator_traits<_BidirectionalIterator>::reference _ReferenceType;
 
     const auto __n = (__last - __first) / 2;
-    unseq_backend::simd_walk_2(__first, __n, std::reverse_iterator<_BidirectionalIterator>(__last),
-                               [](_ReferenceType __x, _ReferenceType __y) {
-                                   using std::swap;
-                                   swap(__x, __y);
-                               });
+    __unseq_backend::__simd_walk_2(__first, __n, std::reverse_iterator<_BidirectionalIterator>(__last),
+                                   [](_ReferenceType __x, _ReferenceType __y) {
+                                       using std::swap;
+                                       swap(__x, __y);
+                                   });
 }
 
 // this brick is called in parallel version, so we can use iterator arithmetic
@@ -1387,11 +1387,11 @@ __brick_reverse(_BidirectionalIterator __first, _BidirectionalIterator __last, _
 {
     typedef typename std::iterator_traits<_BidirectionalIterator>::reference _ReferenceType;
 
-    unseq_backend::simd_walk_2(__first, __last - __first, std::reverse_iterator<_BidirectionalIterator>(__d_last),
-                               [](_ReferenceType __x, _ReferenceType __y) {
-                                   using std::swap;
-                                   swap(__x, __y);
-                               });
+    __unseq_backend::__simd_walk_2(__first, __last - __first, std::reverse_iterator<_BidirectionalIterator>(__d_last),
+                                   [](_ReferenceType __x, _ReferenceType __y) {
+                                       using std::swap;
+                                       swap(__x, __y);
+                                   });
 }
 
 template <class _ExecutionPolicy, class _BidirectionalIterator, class _IsVector>
@@ -1437,8 +1437,8 @@ __brick_reverse_copy(_BidirectionalIterator __first, _BidirectionalIterator __la
     typedef typename std::iterator_traits<_BidirectionalIterator>::reference _ReferenceType1;
     typedef typename std::iterator_traits<_OutputIterator>::reference _ReferenceType2;
 
-    return unseq_backend::simd_walk_2(std::reverse_iterator<_BidirectionalIterator>(__last), __last - __first,
-                                      __d_first, [](_ReferenceType1 __x, _ReferenceType2 __y) { __y = __x; });
+    return __unseq_backend::__simd_walk_2(std::reverse_iterator<_BidirectionalIterator>(__last), __last - __first,
+                                          __d_first, [](_ReferenceType1 __x, _ReferenceType2 __y) { __y = __x; });
 }
 
 template <class _ExecutionPolicy, class _BidirectionalIterator, class _OutputIterator, class _IsVector>
@@ -1503,15 +1503,16 @@ __brick_rotate(_ForwardIterator __first, _ForwardIterator __middle, _ForwardIter
         {
             for (; __last - __first >= __m_2; __first += __m)
             {
-                unseq_backend::simd_assign(__first, __m, __first + __m, iter_swap<_ForwardIterator, _ForwardIterator>);
+                __unseq_backend::__simd_assign(__first, __m, __first + __m,
+                                               iter_swap<_ForwardIterator, _ForwardIterator>);
             }
         }
         else
         {
             for (; __last - __first >= __m_2; __last -= __m)
             {
-                unseq_backend::simd_assign(__last - __m, __m, __last - __m_2,
-                                           iter_swap<_ForwardIterator, _ForwardIterator>);
+                __unseq_backend::__simd_assign(__last - __m, __m, __last - __m_2,
+                                               iter_swap<_ForwardIterator, _ForwardIterator>);
             }
         }
         __is_left = !__is_left;
@@ -1676,9 +1677,9 @@ __brick_is_partitioned(_ForwardIterator __first, _ForwardIterator __last, _Unary
     }
     else
     {
-        _ForwardIterator __result =
-            unseq_backend::simd_first(__first, _SizeType(0), __last - __first,
-                                      [&__pred](_ForwardIterator __it, _SizeType __i) { return !__pred(__it[__i]); });
+        _ForwardIterator __result = __unseq_backend::__simd_first(
+            __first, _SizeType(0), __last - __first,
+            [&__pred](_ForwardIterator __it, _SizeType __i) { return !__pred(__it[__i]); });
         if (__result == __last)
         {
             return true;
@@ -1686,7 +1687,7 @@ __brick_is_partitioned(_ForwardIterator __first, _ForwardIterator __last, _Unary
         else
         {
             ++__result;
-            return !unseq_backend::simd_or(__result, __last - __result, __pred);
+            return !__unseq_backend::__simd_or(__result, __last - __result, __pred);
         }
     }
 }
@@ -1999,7 +2000,7 @@ __brick_partition_copy(_ForwardIterator __first, _ForwardIterator __last, _Outpu
                        _OutputIterator2 __out_false, _UnaryPredicate __pred, /*is_vector=*/std::true_type) noexcept
 {
 #if (__PSTL_MONOTONIC_PRESENT)
-    return unseq_backend::simd_partition_copy(__first, __last - __first, __out_true, __out_false, __pred);
+    return __unseq_backend::__simd_partition_copy(__first, __last - __first, __out_true, __out_false, __pred);
 #else
     return std::partition_copy(__first, __last, __out_true, __out_false, __pred);
 #endif
@@ -2234,7 +2235,7 @@ _ForwardIterator
 __brick_adjacent_find(_ForwardIterator __first, _ForwardIterator __last, _BinaryPredicate __pred,
                       /* IsVector = */ std::true_type, bool __or_semantic) noexcept
 {
-    return unseq_backend::simd_adjacent_find(__first, __last, __pred, __or_semantic);
+    return __unseq_backend::__simd_adjacent_find(__first, __last, __pred, __or_semantic);
 }
 
 template <class _ForwardIterator, class _BinaryPredicate>
@@ -2370,7 +2371,7 @@ void
 __brick_fill(_ForwardIterator __first, _ForwardIterator __last, const _Tp& __value,
              /* __is_vector = */ std::true_type) noexcept
 {
-    unseq_backend::simd_fill_n(__first, __last - __first, __value);
+    __unseq_backend::__simd_fill_n(__first, __last - __first, __value);
 }
 
 template <class _ForwardIterator, class _Tp>
@@ -2409,7 +2410,7 @@ template <class _OutputIterator, class _Size, class _Tp>
 _OutputIterator
 __brick_fill_n(_OutputIterator __first, _Size __count, const _Tp& __value, /* __is_vector = */ std::true_type) noexcept
 {
-    return unseq_backend::simd_fill_n(__first, __count, __value);
+    return __unseq_backend::__simd_fill_n(__first, __count, __value);
 }
 
 template <class _OutputIterator, class _Size, class _Tp>
@@ -2444,7 +2445,7 @@ void
 __brick_generate(_RandomAccessIterator __first, _RandomAccessIterator __last, _Generator __g,
                  /* is_vector = */ std::true_type) noexcept
 {
-    unseq_backend::simd_generate_n(__first, __last - __first, __g);
+    __unseq_backend::__simd_generate_n(__first, __last - __first, __g);
 }
 
 template <class _ForwardIterator, class _Generator>
@@ -2483,7 +2484,7 @@ template <class OutputIterator, class Size, class _Generator>
 OutputIterator
 __brick_generate_n(OutputIterator __first, Size __count, _Generator __g, /* is_vector = */ std::true_type) noexcept
 {
-    return unseq_backend::simd_generate_n(__first, __count, __g);
+    return __unseq_backend::__simd_generate_n(__first, __count, __g);
 }
 
 template <class OutputIterator, class Size, class _Generator>
@@ -2532,7 +2533,7 @@ __brick_remove_if(_RandomAccessIterator __first, _RandomAccessIterator __last, _
                   /* __is_vector = */ std::true_type) noexcept
 {
 #if __PSTL_MONOTONIC_PRESENT
-    return unseq_backend::simd_remove_if(__first, __last - __first, __pred);
+    return __unseq_backend::__simd_remove_if(__first, __last - __first, __pred);
 #else
     return std::remove_if(__first, __last, __pred);
 #endif
@@ -3307,7 +3308,7 @@ __brick_is_heap_until(_RandomAccessIterator __first, _RandomAccessIterator __las
     if (__last - __first < 2)
         return __last;
     typedef typename std::iterator_traits<_RandomAccessIterator>::difference_type _SizeType;
-    return unseq_backend::simd_first(
+    return __unseq_backend::__simd_first(
         __first, _SizeType(0), __last - __first,
         [&__comp](_RandomAccessIterator __it, _SizeType __i) { return __comp(__it[(__i - 1) / 2], __it[__i]); });
 }
@@ -3341,7 +3342,7 @@ _RandomAccessIterator
 is_heap_until_local(_RandomAccessIterator __first, _DifferenceType __begin, _DifferenceType __end, _Compare __comp,
                     /* __is_vector = */ std::true_type) noexcept
 {
-    return unseq_backend::simd_first(
+    return __unseq_backend::__simd_first(
         __first, __begin, __end,
         [&__comp](_RandomAccessIterator __it, _DifferenceType __i) { return __comp(__it[(__i - 1) / 2], __it[__i]); });
 }
@@ -3384,7 +3385,7 @@ __brick_min_element(_ForwardIterator __first, _ForwardIterator __last, _Compare 
                     /* __is_vector = */ std::true_type) noexcept
 {
 #if __PSTL_UDR_PRESENT
-    return unseq_backend::simd_min_element(__first, __last - __first, __comp);
+    return __unseq_backend::__simd_min_element(__first, __last - __first, __comp);
 #else
     return std::min_element(__first, __last, __comp);
 #endif
@@ -3440,7 +3441,7 @@ __brick_minmax_element(_ForwardIterator __first, _ForwardIterator __last, _Compa
                        /* __is_vector = */ std::true_type) noexcept
 {
 #if __PSTL_UDR_PRESENT
-    return unseq_backend::simd_minmax_element(__first, __last - __first, __comp);
+    return __unseq_backend::__simd_minmax_element(__first, __last - __first, __comp);
 #else
     return std::minmax_element(__first, __last, __comp);
 #endif
@@ -3515,7 +3516,7 @@ __brick_mismatch(_ForwardIterator1 __first1, _ForwardIterator1 __last1, _Forward
                  _ForwardIterator2 __last2, _Predicate __pred, /* __is_vector = */ std::true_type) noexcept
 {
     auto __n = std::min(__last1 - __first1, __last2 - __first2);
-    return unseq_backend::simd_first(__first1, __n, __first2, __not_pred<_Predicate>(__pred));
+    return __unseq_backend::__simd_first(__first1, __n, __first2, __not_pred<_Predicate>(__pred));
 }
 
 template <class _ExecutionPolicy, class _ForwardIterator1, class _ForwardIterator2, class _Predicate, class _IsVector>
@@ -3583,7 +3584,7 @@ __brick_lexicographical_compare(_ForwardIterator1 __first1, _ForwardIterator1 __
         --__last1;
         --__last2;
         auto __n = std::min(__last1 - __first1, __last2 - __first2);
-        std::pair<_ForwardIterator1, _ForwardIterator2> __result = unseq_backend::simd_first(
+        std::pair<_ForwardIterator1, _ForwardIterator2> __result = __unseq_backend::__simd_first(
             __first1, __n, __first2, [__comp](const ref_type1 __x, const ref_type2 __y) mutable {
                 return __comp(__x, __y) || __comp(__y, __x);
             });

@@ -45,7 +45,7 @@ __brick_uninitialized_move(_ForwardIterator __first, _ForwardIterator __last, _O
     typedef typename std::iterator_traits<_ForwardIterator>::reference _ReferenceType1;
     typedef typename std::iterator_traits<_OutputIterator>::reference _ReferenceType2;
 
-    return unseq_backend::simd_walk_2(
+    return __unseq_backend::__simd_walk_2(
         __first, __last - __first, __result,
         [](_ReferenceType1 __x, _ReferenceType2 __y) { ::new (std::addressof(__y)) __ValueType2(std::move(__x)); });
 }
